@@ -1,0 +1,5 @@
+os
+streamlit
+langchain_community
+langchain-groq
+langchain-classic
