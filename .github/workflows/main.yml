@@ -19,18 +19,20 @@ jobs:
           git config --global user.name "GitHub Actions"
 
       - name: Clone Hugging Face Space
-        run: |
-          git clone https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf_space
         env:
           HF_USERNAME: ${{ secrets.HF_USERNAME }}
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_SPACE_NAME: ${{ secrets.HF_SPACE_NAME }}
+        run: |
+          git clone https://$HF_USERNAME:$HF_TOKEN@huggingface.co/spaces/$HF_USERNAME/$HF_SPACE_NAME hf_space
 
       - name: Sync files to Hugging Face Space
         run: |
           rsync -av --delete \
             --exclude='.git' \
             --exclude='.github' \
+            --exclude='hf_space' \
+            --exclude='.gitattributes' \
             ./ hf_space/
 
       - name: Push changes to Hugging Face Space
@@ -38,4 +40,4 @@ jobs:
           cd hf_space
           git add .
           git commit -m "🚀 Auto-deploy from GitHub Actions" || echo "No changes to commit"
-          git push
+          git push origin main
