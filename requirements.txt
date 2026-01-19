@@ -1,4 +1,3 @@
-os
 streamlit
 langchain_community
 langchain-groq
